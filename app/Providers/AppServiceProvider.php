@@ -20,9 +20,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Force HTTPS for Railway/cloud deployments behind reverse proxy
-        if (config('app.env') === 'production') {
+        // Force HTTPS when behind a reverse proxy (Railway, Heroku, etc.)
+        // Railway always sends X-Forwarded-Proto: https
+        if (
+            isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https'
+            || isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'
+            || config('app.env') === 'production'
+        ) {
             URL::forceScheme('https');
+            URL::forceRootUrl(config('app.url'));
         }
     }
 }
