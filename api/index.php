@@ -1,4 +1,3 @@
 <?php
-
-// Forward Vercel requests to normal index.php
-require __DIR__ . '/../public/index.php';
+echo "PHP is working on Vercel! Current PHP version: " . phpversion();
+exit;
