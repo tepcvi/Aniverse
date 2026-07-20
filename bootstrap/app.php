@@ -23,12 +23,19 @@ $app = Application::configure(basePath: dirname(__DIR__))
 // Customize storage path for Vercel serverless environment
 if (isset($_ENV['VERCEL_URL']) || isset($_SERVER['VERCEL_URL'])) {
     $storagePath = '/tmp/storage';
-    if (!is_dir($storagePath)) {
-        mkdir($storagePath, 0755, true);
-        mkdir($storagePath . '/framework/views', 0755, true);
-        mkdir($storagePath . '/framework/cache/data', 0755, true);
-        mkdir($storagePath . '/framework/sessions', 0755, true);
-        mkdir($storagePath . '/logs', 0755, true);
+    $dirs = [
+        $storagePath,
+        $storagePath . '/framework',
+        $storagePath . '/framework/views',
+        $storagePath . '/framework/cache',
+        $storagePath . '/framework/cache/data',
+        $storagePath . '/framework/sessions',
+        $storagePath . '/logs',
+    ];
+    foreach ($dirs as $dir) {
+        if (!is_dir($dir)) {
+            @mkdir($dir, 0755, true);
+        }
     }
     $app->useStoragePath($storagePath);
 }
