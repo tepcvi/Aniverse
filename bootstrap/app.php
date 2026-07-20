@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 
 $app = Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,13 +13,19 @@ $app = Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // Trust all proxies (needed for Railway, Heroku, etc.)
+        $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*'),
         );
     })->create();
+
+// Force HTTPS in production (Railway reverse proxy terminates SSL)
+if (isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] === 'production') {
+    URL::forceScheme('https');
+}
 
 // Customize storage path for Vercel serverless environment
 if (isset($_ENV['VERCEL_URL']) || isset($_SERVER['VERCEL_URL'])) {
