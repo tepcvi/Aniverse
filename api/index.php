@@ -1,3 +1,4 @@
 <?php
-echo "PHP is working on Vercel! Current PHP version: " . phpversion();
-exit;
+
+// Forward Vercel requests to Laravel's index.php
+require __DIR__ . '/../public/index.php';
