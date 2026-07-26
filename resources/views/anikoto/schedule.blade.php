@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@php $metaTitle = 'Anikoto Schedule — AniVerse'; @endphp
+@php $metaTitle = 'Anikoto Schedule — Anitep'; @endphp
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">

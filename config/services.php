@@ -39,4 +39,16 @@ return [
         'base_url' => env('ANIKOTO_API_URL', 'http://localhost:3000'),
     ],
 
+    'allmanga' => [
+        'base_url' => env('ALLMANGA_API_URL', 'http://localhost:8000'),
+    ],
+
+    'animepahe' => [
+        'base_url' => env('ANIMEPAHE_API_URL', 'http://localhost:3001'),
+    ],
+
+    'anivexa' => [
+        'base_url' => env('ANIVEXA_API_URL', 'http://localhost:8001'),
+    ],
+
 ];

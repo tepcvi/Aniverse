@@ -8,7 +8,7 @@
                         <path d="M12 2L2 19h20L12 2zm0 4l7 13H5l7-13z"/>
                     </svg>
                 </div>
-                <span class="text-xl font-bold"><span class="text-gradient">Ani</span><span class="text-white light:text-dark-900">Verse</span></span>
+                <span class="text-xl font-bold"><span class="text-gradient">Ani</span><span class="text-white light:text-dark-900">tep</span></span>
             </a>
 
             {{-- Desktop Navigation --}}

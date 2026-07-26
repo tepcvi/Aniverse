@@ -57,7 +57,7 @@ class SearchController extends Controller
             'seasons' => $this->anilist->getSeasons(),
             'formats' => $this->anilist->getFormats(),
             'statuses' => $this->anilist->getStatuses(),
-            'metaTitle' => !empty($filters['query']) ? "Search: {$filters['query']} — AniVerse" : 'Search Anime — AniVerse',
+            'metaTitle' => !empty($filters['query']) ? "Search: {$filters['query']} — Anitep" : 'Search Anime — Anitep',
         ]);
     }
 

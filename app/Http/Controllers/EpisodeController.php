@@ -28,7 +28,7 @@ class EpisodeController extends Controller
             'info' => $info,
             'episodes' => $episodes,
             'slug' => $slug,
-            'metaTitle' => ($info['title'] ?? 'Unknown') . ' - Episode List - AniVerse',
+            'metaTitle' => ($info['title'] ?? 'Unknown') . ' - Episode List - Anitep',
         ]);
     }
 

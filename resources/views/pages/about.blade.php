@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @php
-    $metaTitle = 'About — AniVerse';
-    $metaDescription = 'AniVerse is a modern anime discovery platform powered by the AniList API. Built with Laravel and Tailwind CSS.';
+    $metaTitle = 'About — Anitep';
+    $metaDescription = 'Anitep is a modern anime discovery platform powered by the AniList API. Built with Laravel and Tailwind CSS.';
 @endphp
 
 @section('content')
@@ -15,7 +15,7 @@
             </svg>
         </div>
         <h1 class="text-4xl sm:text-5xl font-extrabold text-white light:text-dark-900 mb-4">
-            About <span class="text-gradient">AniVerse</span>
+            About <span class="text-gradient">Anitep</span>
         </h1>
         <p class="text-lg text-dark-400 light:text-dark-500 max-w-2xl mx-auto leading-relaxed">
             Your gateway to the world of anime. Discover trending shows, explore genres, and find your next favorite series.

@@ -1,5 +1,5 @@
 // ============================================================
-// AniVerse — Frontend JavaScript
+// Anitep — Frontend JavaScript
 // ============================================================
 
 import Alpine from 'alpinejs';

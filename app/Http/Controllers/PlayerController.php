@@ -112,7 +112,7 @@ class PlayerController extends Controller
             'related' => $related,
             'recommended' => $recommended,
             'characters' => $characters,
-            'metaTitle' => ($info['title'] ?? 'Watch') . " Episode {$episode} - Stream Online - AniVerse",
+            'metaTitle' => ($info['title'] ?? 'Watch') . " Episode {$episode} - Stream Online - Anitep",
         ]);
     }
 

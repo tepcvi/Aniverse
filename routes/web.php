@@ -54,3 +54,16 @@ Route::prefix('anikoto')->name('anikoto.')->group(function () {
     Route::get('/health', [AnikotoController::class, 'health'])->name('health');
 });
 
+// ──────────────────────────────────────────────
+// AllManga API Alternative Source Test Endpoint
+// ──────────────────────────────────────────────
+Route::get('/api/allmanga/test', function (\Illuminate\Http\Request $request) {
+    $service = app(\App\Services\AllMangaService::class);
+    $q = $request->get('q', 'One Piece');
+    return response()->json([
+        'status' => $service->isHealthy() ? 'online' : 'offline',
+        'query' => $q,
+        'search_result' => $service->search($q),
+    ]);
+})->name('allmanga.test');
+

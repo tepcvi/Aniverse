@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @php
-    $metaTitle = ($filters['query'] ?? false) ? "Search: {$filters['query']} — AniVerse" : 'Search Anime — AniVerse';
+    $metaTitle = ($filters['query'] ?? false) ? "Search: {$filters['query']} — Anitep" : 'Search Anime — Anitep';
 @endphp
 
 @section('content')

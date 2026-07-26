@@ -40,7 +40,7 @@ class AnimeController extends Controller
             'anime' => $anime,
             'episodes' => $episodes,
             'id' => $anime['id'] ?? $id, // Use resolved Anikoto ID for watch links
-            'metaTitle' => ($anime['title'] ?? 'Anime Details') . ' — AniVerse',
+            'metaTitle' => ($anime['title'] ?? 'Anime Details') . ' — Anitep',
             'metaDescription' => \Illuminate\Support\Str::limit($anime['description'] ?? '', 160),
             'metaImage' => $anime['poster'] ?? '',
         ]);

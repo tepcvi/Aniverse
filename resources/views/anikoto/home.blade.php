@@ -105,7 +105,7 @@
                 <div class="mt-12 flex items-center justify-center gap-4">
                     @if($pagination['page'] > 1)
                         <a href="{{ route('home', ['page' => $pagination['page'] - 1]) }}" class="px-5 py-2.5 rounded-xl bg-dark-900 hover:bg-dark-800 text-white font-semibold text-xs border border-dark-800 transition-colors">
-                            ◀ Previous Page
+                            Previous Page
                         </a>
                     @endif
                     
@@ -115,7 +115,7 @@
 
                     @if($pagination['page'] < $pagination['total_pages'])
                         <a href="{{ route('home', ['page' => $pagination['page'] + 1]) }}" class="px-5 py-2.5 rounded-xl bg-primary-600 hover:bg-primary-500 text-white font-semibold text-xs transition-colors shadow-lg shadow-primary-600/15">
-                            Next Page ▶
+                            Next Page
                         </a>
                     @endif
                 </div>

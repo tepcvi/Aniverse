@@ -43,8 +43,45 @@ class WatchController extends Controller
         $embedSub = $this->anikoto->getEmbedUrl($anime, $currentEpisodeObj, 'sub');
         $embedDub = $this->anikoto->getEmbedUrl($anime, $currentEpisodeObj, 'dub');
 
-        // Check if both sub and dub embed URLs are completely missing
-        $embedUrl = $embedSub ?? $embedDub;
+        // Alternative streaming source: Anivexa API (walterwhite-69 aggregator)
+        $anivexaMulti = ['sub' => [], 'dub' => []];
+        try {
+            $anivexaService = app(\App\Services\AnivexaService::class);
+            $anilistId = $anime['id'] ?? ($id ?? null);
+            if ($anilistId) {
+                $anivexaMulti = $anivexaService->getMultiServers($anilistId, $episode);
+            }
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::warning('Anivexa multi-source fallback failed: ' . $e->getMessage());
+        }
+
+        $embedVidcloudSub   = $anivexaMulti['sub']['vidcloud'] ?? null;
+        $embedVidcloudDub   = $anivexaMulti['dub']['vidcloud'] ?? null;
+        $embedUpcloudSub    = $anivexaMulti['sub']['upcloud'] ?? null;
+        $embedUpcloudDub    = $anivexaMulti['dub']['upcloud'] ?? null;
+        $embedMegacloudSub  = $anivexaMulti['sub']['megacloud'] ?? null;
+        $embedMegacloudDub  = $anivexaMulti['dub']['megacloud'] ?? null;
+        $embedGogoSub       = $anivexaMulti['sub']['gogoanime'] ?? null;
+        $embedGogoDub       = $anivexaMulti['dub']['gogoanime'] ?? null;
+        $embedFilemoonSub   = $anivexaMulti['sub']['filemoon'] ?? null;
+        $embedFilemoonDub   = $anivexaMulti['dub']['filemoon'] ?? null;
+        $embedStreamtapeSub = $anivexaMulti['sub']['streamtape'] ?? null;
+        $embedStreamtapeDub = $anivexaMulti['dub']['streamtape'] ?? null;
+        $embedDoodSub       = $anivexaMulti['sub']['doodstream'] ?? null;
+        $embedDoodDub       = $anivexaMulti['dub']['doodstream'] ?? null;
+        $embedStreamSbSub   = $anivexaMulti['sub']['streamsb'] ?? null;
+        $embedStreamSbDub   = $anivexaMulti['dub']['streamsb'] ?? null;
+        $embedMp4uploadSub  = $anivexaMulti['sub']['mp4upload'] ?? null;
+        $embedMp4uploadDub  = $anivexaMulti['dub']['mp4upload'] ?? null;
+        $embedMiruroSub     = $anivexaMulti['sub']['miruro'] ?? null;
+        $embedMiruroDub     = $anivexaMulti['dub']['miruro'] ?? null;
+
+        // Legacy Anivexa general aliases
+        $embedAnivexaSub = $embedVidcloudSub ?? $embedUpcloudSub ?? $embedMegacloudSub ?? $embedGogoSub ?? $embedFilemoonSub ?? $embedStreamtapeSub ?? $embedDoodSub ?? $embedStreamSbSub ?? $embedMp4uploadSub ?? $embedMiruroSub;
+        $embedAnivexaDub = $embedVidcloudDub ?? $embedUpcloudDub ?? $embedMegacloudDub ?? $embedGogoDub ?? $embedFilemoonDub ?? $embedStreamtapeDub ?? $embedDoodDub ?? $embedStreamSbDub ?? $embedMp4uploadDub ?? $embedMiruroDub;
+
+        // Check if primary embed URLs are missing, fallback to best available
+        $embedUrl = $embedSub ?? $embedDub ?? $embedAnivexaSub ?? $embedAnivexaDub;
 
         // Navigation calculations (find next / previous episode numbers)
         $prevEpisode = null;
@@ -56,12 +93,15 @@ class WatchController extends Controller
         
         // Find position of current episode
         $currentIndex = array_search((string)$episode, $epNumbers);
-
         if ($currentIndex !== false) {
-            // Ascending order check: usually sorted 1, 2, 3...
-            // If they are sorted ascending:
-            $prevEpisode = ($currentIndex > 0) ? $epNumbers[$currentIndex - 1] : null;
-            $nextEpisode = ($currentIndex < count($epNumbers) - 1) ? $epNumbers[$currentIndex + 1] : null;
+            $values = array_values($epNumbers);
+            $key = array_search((string)$episode, $values);
+            if ($key > 0) {
+                $prevEpisode = $values[$key - 1];
+            }
+            if ($key < count($values) - 1) {
+                $nextEpisode = $values[$key + 1];
+            }
         }
 
         return view('anikoto.watch', [
@@ -71,12 +111,35 @@ class WatchController extends Controller
             'episodeNum' => $episode,
             'embedSub' => $embedSub,
             'embedDub' => $embedDub,
+            'embedAnivexaSub' => $embedAnivexaSub,
+            'embedAnivexaDub' => $embedAnivexaDub,
+            'embedAnivexa' => $embedAnivexaSub ?? $embedAnivexaDub,
+            'embedVidcloudSub'   => $embedVidcloudSub,
+            'embedVidcloudDub'   => $embedVidcloudDub,
+            'embedUpcloudSub'    => $embedUpcloudSub,
+            'embedUpcloudDub'    => $embedUpcloudDub,
+            'embedMegacloudSub'  => $embedMegacloudSub,
+            'embedMegacloudDub'  => $embedMegacloudDub,
+            'embedGogoSub'       => $embedGogoSub,
+            'embedGogoDub'       => $embedGogoDub,
+            'embedFilemoonSub'   => $embedFilemoonSub,
+            'embedFilemoonDub'   => $embedFilemoonDub,
+            'embedStreamtapeSub' => $embedStreamtapeSub,
+            'embedStreamtapeDub' => $embedStreamtapeDub,
+            'embedDoodSub'       => $embedDoodSub,
+            'embedDoodDub'       => $embedDoodDub,
+            'embedStreamSbSub'   => $embedStreamSbSub,
+            'embedStreamSbDub'   => $embedStreamSbDub,
+            'embedMp4uploadSub'  => $embedMp4uploadSub,
+            'embedMp4uploadDub'  => $embedMp4uploadDub,
+            'embedMiruroSub'     => $embedMiruroSub,
+            'embedMiruroDub'     => $embedMiruroDub,
             'embedUrl' => $embedUrl,
             'prevEpisode' => $prevEpisode,
             'nextEpisode' => $nextEpisode,
             'id' => $id,
-            'metaTitle' => ($anime['title'] ?? 'Watch') . " Episode {$episode} — AniVerse",
-            'metaDescription' => "Watch " . ($anime['title'] ?? 'Anime') . " Episode {$episode} on AniVerse. English subbed and dubbed options.",
+            'metaTitle' => ($anime['title'] ?? 'Watch') . " Episode {$episode} — Anitep",
+            'metaDescription' => "Watch " . ($anime['title'] ?? 'Anime') . " Episode {$episode} on Anitep. English subbed and dubbed options.",
             'metaImage' => $anime['poster'] ?? '',
         ]);
     }

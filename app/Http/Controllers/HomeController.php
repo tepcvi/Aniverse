@@ -42,8 +42,8 @@ class HomeController extends Controller
             'anime' => $anime,
             'pagination' => $pagination,
             'currentPage' => $page,
-            'metaTitle' => 'Home - AniVerse Anime Streaming Catalog',
-            'metaDescription' => 'Browse the latest anime series and releases on AniVerse. Free online streaming database.'
+            'metaTitle' => 'Home - Anitep Anime Streaming Catalog',
+            'metaDescription' => 'Browse the latest anime series and releases on Anitep. Free online streaming database.'
         ]);
     }
 }

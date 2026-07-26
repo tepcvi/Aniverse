@@ -55,7 +55,7 @@ class AnikotoController extends Controller
             'dataId' => $details['dataId'],
             'id' => $details['dataId'],
             'slug' => $slug,
-            'metaTitle' => ($info['title'] ?? 'Unknown') . ' — AniVerse',
+            'metaTitle' => ($info['title'] ?? 'Unknown') . ' — Anitep',
             'metaDescription' => \Illuminate\Support\Str::limit($info['synopsis'] ?? '', 160),
             'metaImage' => $info['poster'] ?? '',
         ]);
@@ -132,7 +132,7 @@ class AnikotoController extends Controller
             'nextEpisode' => $nextEpisode,
             'related' => [],
             'recommended' => [],
-            'metaTitle' => ($info['title'] ?? 'Unknown') . " Episode {$episode} — AniVerse",
+            'metaTitle' => ($info['title'] ?? 'Unknown') . " Episode {$episode} — Anitep",
         ]);
     }
 
@@ -158,8 +158,17 @@ class AnikotoController extends Controller
      */
     public function health()
     {
+        $anivexaHealthy = false;
+        try {
+            $anivexaService = app(\App\Services\AnivexaService::class);
+            $anivexaHealthy = $anivexaService->isHealthy();
+        } catch (\Exception $e) {
+            $anivexaHealthy = false;
+        }
+
         return response()->json([
             'anikoto_api' => $this->anikoto->isHealthy() ? 'online' : 'offline',
+            'anivexa_api' => $anivexaHealthy ? 'online' : 'offline',
             'timestamp' => now()->toISOString(),
         ]);
     }
