@@ -13,19 +13,19 @@ $app = Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Trust all proxies (needed for Railway, Heroku, etc.)
+        // Trust all proxies (needed for Railway, Heroku, Vercel, etc.)
         $middleware->trustProxies(at: '*');
+
+        // Force HTTPS scheme for all URLs in production (Vercel, Railway :443)
+        $middleware->web(prepend: [
+            \App\Http\Middleware\ForceHttpsScheme::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*'),
         );
     })->create();
-
-// Force HTTPS in production (Railway reverse proxy terminates SSL)
-if (isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] === 'production') {
-    URL::forceScheme('https');
-}
 
 // Vercel serverless environment: rewrite all writables to /tmp
 $onVercel = isset($_ENV['VERCEL']) || isset($_ENV['VERCEL_URL']) || isset($_SERVER['VERCEL_URL']) || isset($_SERVER['VERCEL']);
